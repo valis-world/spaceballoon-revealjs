@@ -42,3 +42,13 @@ This method automatically reloads the browser tab whenever you save a change, ma
     *   Alternatively, you can click the `Go Live` button in the bottom-right status bar of VS Code.
 
 This will start a local server and open the presentation in your default browser. Any changes you save to the files will now appear instantly.
+
+---
+
+## Licensing
+
+This project is comprised of two main components, each with its own license:
+
+1.  **The Framework:** The underlying reveal.js framework code, located in the `dist/` and `plugin/` folders, is the work of Hakim El Hattab and contributors. It is licensed under the MIT License, a copy of which is available in the `LICENSE-revealjs` file.
+
+2.  **Presentation Content:** All original presentation content, including the text and structure within `index.html` and this documentation, is Copyright (c) 2025 The SpaceBalloon Team and is also licensed under the MIT License, available in the `LICENSE` file.
