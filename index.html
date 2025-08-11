@@ -27,7 +27,18 @@
 					class="image-margin"
 					data-background-image="resources/JuFoLogo.svg" 
 					data-background-size="contain"></section>
+
+				<section>
+					<h2>
+						<span id="participant-count">0</span> Participants
+					</h2>
 				</section>
+
+				<section 
+					data-background-image="resources/europe.svg"
+					data-background-size="cover"></section>
+
+
 
 			</div>
 		</div>
@@ -47,5 +58,41 @@
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
 			});
 		</script>
+		<script>
+Reveal.on('slidechanged', function(event) {
+    // Check if we're on the correct slide (the third one, index 2)
+    if (event.indexh === 2) {
+        let el = document.getElementById('participant-count');
+        let target = 10000;
+        let duration = 4000; // ms
+        let delay = 500; // ms delay before starting the count
+        let startTime = null;
+
+        function animateCount(timestamp) {
+            if (!startTime) startTime = timestamp;
+            let progress = timestamp - startTime;
+            // Ease-out cubic
+            let t = Math.min(progress / duration, 1);
+            let eased = 1 - Math.pow(1 - t, 3);
+            let current = Math.floor(eased * target);
+            el.textContent = current.toLocaleString();
+            if (current < target) {
+                requestAnimationFrame(animateCount);
+            } else {
+                el.textContent = target.toLocaleString();
+            }
+        }
+        // Reset to 0 and start animation after delay
+        el.textContent = "0";
+        setTimeout(() => {
+            requestAnimationFrame(animateCount);
+        }, delay);
+    } else {
+        // Optionally reset the counter when leaving the slide
+        let el = document.getElementById('participant-count');
+        if (el) el.textContent = "0";
+    }
+});
+</script>
 	</body>
 </html>
