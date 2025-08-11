@@ -18,3 +18,8 @@
     border: 40px solid transparent;
     box-sizing: border-box;
 }
+
+.reveal .controls,
+.reveal .progress {
+    display: none !important;
+}
