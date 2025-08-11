@@ -5,6 +5,13 @@
   display: block;
   margin: auto;
 }
+
+.tight h2 {
+margin-top: 0.1em;
+margin-bottom: 0.1em;
+line-height: 1;
+}
+
 .centered-svg {
   display: flex;
   justify-content: center;
