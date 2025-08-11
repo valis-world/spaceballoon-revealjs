@@ -13,3 +13,8 @@
   padding-top: 0%;
   padding-left: 0%;
 }
+.image-margin {
+    /* Adds transparent border to create margin effect */
+    border: 40px solid transparent;
+    box-sizing: border-box;
+}
