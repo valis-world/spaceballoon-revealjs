@@ -2,6 +2,13 @@
 
 This repository contains the source code for [the SpaceBalloon team's](https://github.com/BOGYLI/SpaceBalloon) presentation about our project and journey in the German science competition, *Jugend forscht*.
 
+## Features
+
+*   A clean and modern presentation built with reveal.js.
+*   A custom animation for the number of participants.
+*   A well-organized file structure.
+*   No build tools required, just open `index.html` in your browser.
+
 ## Technical Setup
 
 This presentation is built using the **reveal.js** framework. It has been structured as a minimal, dependency-free project, meaning it does not require any build tools or package managers like Node.js to view.
@@ -13,8 +20,11 @@ The repository is kept as clean as possible and contains only the essential runt
 ```
 .
 ├── index.html     // The main file with all presentation slides.
+├── script.js      // Custom javascript for animations and interactions.
+├── styles.css     // Custom styles for the presentation.
 ├── dist/          // Contains the core reveal.js engine (JavaScript and CSS).
-└── plugin/        // Contains reveal.js plugins for features like notes, markdown, etc.
+├── plugin/        // Contains reveal.js plugins for features like notes, markdown, etc.
+└── resources/     // Contains images and SVGs used in the presentation.
 ```
 
 ### How to View the Presentation
@@ -51,4 +61,4 @@ This project is comprised of two main components, each with its own license:
 
 1.  **The Framework:** The underlying reveal.js framework code, located in the `dist/` and `plugin/` folders, is the work of Hakim El Hattab and contributors. It is licensed under the MIT License, a copy of which is available in the `LICENSE-revealjs` file.
 
-2.  **Presentation Content:** All original presentation content, including the text and structure within `index.html` and this documentation, is Copyright (c) 2025 valis-world and is also licensed under the MIT License, available in the `LICENSE` file.
+2.  **Presentation Content:** All original presentation content, including the text and structure within `index.html`, `script.js`, `styles.css` and this documentation, is Copyright (c) 2025 valis-world and is also licensed under the MIT License, available in the `LICENSE` file.

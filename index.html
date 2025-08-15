@@ -1,18 +1,18 @@
+<!-- This file defines the structure of the reveal.js presentation, including the order of slides and their content. -->
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Space Balloon Presentation</title>
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
 		<link rel="stylesheet" href="dist/theme/black.css">
 		<link rel="stylesheet" href="styles.css">
 
-
-		<!-- Theme used for syntax highlighted code -->
+		
 		<link rel="stylesheet" href="plugin/highlight/monokai.css">
 	</head>
 	<body>
@@ -23,40 +23,31 @@
 					<h1>Space Balloon</h1>
 				</section>
 
-				<section 
-					class="image-margin"
-					data-background-image="resources/JuFoLogo.svg" 
-					data-background-size="contain"></section>
-
 				<section>
-					<h2>Youth researches</h2>
+					<h2 class="r-fit-text">Youth researches</h2>
+				</section>
+
+				<section
+					data-background-image="resources/svgs/JuFoLogo.svg"
+					data-background-size="contain">
 				</section>
 
 				<section>
-    				<div class="tight">
-        				<h2>
-            				<span id="participant-count">0</span> Participants
-        				</h2>
-        				<h2>yearly</h2>
-    				</div>
+					<div class="compact-heading">
+						<h2>
+							<span id="participant-count">0</span> Participants yearly
+						</h2>
+					</div>
 				</section>
 
-				<section 
-					data-background-image="resources/europe.svg"
+				<section
+					data-background-image="resources/svgs/europe.svg"
 					data-background-size="cover">
 				</section>
 
-				<section
-					data-background-image="resources/jufo-augsburg.jpg">
-				</section>
-
-				<section
-					data-background-image="resources/jufo-augsburg1.jpg">
-				</section>
-
-				<section
-					data-background-image="resources/jufo-augsburg2.jpg">
-				</section>
+				<section data-background-image="resources/images/jufo-augsburg.jpg"></section>
+				<section data-background-image="resources/images/jufo-augsburg1.jpg"></section>
+				<section data-background-image="resources/images/jufo-augsburg2.jpg"></section>
 
 				<section>
 					<h1>1st place regional level</h1>
@@ -66,9 +57,7 @@
 					<h1>State level</h1>
 				</section>
 
-				<section
-					data-background-image="resources/jufo-bayern.png">
-				</section>
+				<section data-background-image="resources/images/jufo-bayern.png"></section>
 
 			</div>
 		</div>
@@ -77,52 +66,6 @@
 		<script src="plugin/notes/notes.js"></script>
 		<script src="plugin/markdown/markdown.js"></script>
 		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
-
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-		<script>
-Reveal.on('slidechanged', function(event) {
-    // Check if we're on the correct slide (the third one, index 2)
-    if (event.indexh === 2) {
-        let el = document.getElementById('participant-count');
-        let target = 10000;
-        let duration = 4000; // ms
-        let delay = 500; // ms delay before starting the count
-        let startTime = null;
-
-        function animateCount(timestamp) {
-            if (!startTime) startTime = timestamp;
-            let progress = timestamp - startTime;
-            // Ease-out cubic
-            let t = Math.min(progress / duration, 1);
-            let eased = 1 - Math.pow(1 - t, 3);
-            let current = Math.floor(eased * target);
-            el.textContent = current.toLocaleString();
-            if (current < target) {
-                requestAnimationFrame(animateCount);
-            } else {
-                el.textContent = target.toLocaleString();
-            }
-        }
-        // Reset to 0 and start animation after delay
-        el.textContent = "0";
-        setTimeout(() => {
-            requestAnimationFrame(animateCount);
-        }, delay);
-    } else {
-        // Optionally reset the counter when leaving the slide
-        let el = document.getElementById('participant-count');
-        if (el) el.textContent = "0";
-    }
-});
-</script>
+		<script src="script.js"></script>
 	</body>
 </html>
