@@ -1,25 +1,25 @@
 /* This file provides custom styles for the reveal.js presentation, overriding and extending the default theme. */
 .reveal .slides .responsive-svg {
-  max-width: 100vw;
-  max-height: 100vw;
-  height: auto;
-  display: block;
-  margin: auto;
+    max-width: 100vw;
+    max-height: 100vw;
+    height: auto;
+    display: block;
+    margin: auto;
 }
 
 .compact-heading h2 {
-margin-top: 0.1em;
-margin-bottom: 0.1em;
-line-height: 1;
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+    line-height: 1;
 }
 
 .centered-svg {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  padding-top: 0%;
-  padding-left: 0%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding-top: 0;
+    padding-left: 0;
 }
 .image-margin {
     border: 40px solid transparent;
@@ -28,5 +28,34 @@ line-height: 1;
 
 .reveal .controls,
 .reveal .progress {
-    display: none !important;
+    display: none;
+}
+
+.reveal .slides section .participant-count-wrapper {
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.reveal .slides section .huge-text {
+    font-size: 2.5em;
+    margin-bottom: 1em;
+    color: #fff;
+}
+
+.reveal .slides section .mega-counter {
+    font-size: 8em;
+    font-weight: bold;
+    color: #fff;
+    margin: 0;
+    line-height: 1;
+    text-align: center;
+}
+
+.reveal .slides section #participant-count {
+    display: block;
+    width: 100%;
+    text-align: center;
 }
