@@ -99,12 +99,17 @@
 
 				<section>
 					<section>
-						<h2>Jugend forscht</h2>
+						<div style="display: flex; align-items: center; justify-content: center; gap: 1em;">
+    						<img src="resources/svgs/JuFoLogo.svg" alt="Jugend forscht" style="max-width: 300px; height: auto;">
+    						<h2 style="margin: 0;">Jugend forscht</h2>
+						</div>
+						<!--
 						<ul>
 							<li>Structured national competition</li>
 							<li>Prestigious "Science Olympics"</li>
 							<li>Unified format across Germany</li>
 						</ul>
+						-->
 					</section>
 
 					<section>
@@ -179,15 +184,15 @@
 				</section>
 
 				<section>
-					<section>
-						<h2>Our Competition Experience</h2>
-						<img src="resources/images/jufo-bayern.png" alt="Presentation at Competition">
-					</section>
+						<!-- <h2>Our Competition Experience</h2> -->
+						<section data-background-image="resources/images/jufo-bayern.png" alt="Presentation at Competition"></section>
 
 					<section>
-						<h3>Competition Rounds</h3>
+						<h2>Competition Rounds</h2>
 						<div class="chart-placeholder">
-							<p>Local → Regional → State → National</p>
+							<h3 class="fragment" style="font-weight: 300;">Regional</h3>
+							<h3 class="fragment" style="font-weight: 300;">State</h3>
+							<h3 class="fragment" style="font-weight: 300;">National</h3>
 						</div>
 					</section>
 
@@ -221,5 +226,45 @@
 
 		<script src="dist/reveal.js"></script>
 		<script src="script.js"></script>
+		<script>
+let animatingFragments = false;
+
+Reveal.on('slidechanged', function(event) {
+    // Only run on "Competition Rounds" slide
+    if (event.currentSlide.querySelector('h2') &&
+        event.currentSlide.querySelector('h2').textContent.includes('Competition Rounds')) {
+        let fragmentIndex = 0;
+        let fragments = event.currentSlide.querySelectorAll('.fragment');
+        animatingFragments = true;
+
+        function showNextFragment() {
+            if (fragmentIndex < fragments.length) {
+                Reveal.nextFragment();
+                fragmentIndex++;
+                setTimeout(showNextFragment, 2000); // 2 seconds between fragments
+            } else {
+                animatingFragments = false;
+            }
+        }
+        setTimeout(showNextFragment, 2000);
+    } else {
+        animatingFragments = false;
+    }
+});
+
+// Prevent navigation while animating fragments
+document.addEventListener('keydown', function(e) {
+    if (animatingFragments && (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " " || e.key === "Enter")) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+});
+document.addEventListener('click', function(e) {
+    if (animatingFragments) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+}, true);
+</script>
 	</body>
 </html>
