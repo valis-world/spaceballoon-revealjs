@@ -77,3 +77,10 @@
   margin-top: var(--offset-y, 0px); 
   margin-left: var(--offset-x, 0px);
 }
+
+.chart-container {
+  width: 70%;
+  max-width: 700px;
+  height: auto;
+  margin: 0 auto;
+}

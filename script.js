@@ -115,19 +115,78 @@ document.addEventListener('click', function(e) {
     }
 }, true);
 
-let participantsChart; // global chart variable
+
+
+let participantsChart1;
 
 Reveal.on('slidechanged', event => {
-  const canvas = event.currentSlide.querySelector('#participantsChart');
+  const canvas = event.currentSlide.querySelector('#participantsChart1');
   if (!canvas) return;
 
-  // Destroy previous chart if it exists
-  if (participantsChart) {
-    participantsChart.destroy();
+  if (participantsChart1) {
+    participantsChart1.destroy();
   }
 
-  // Recreate the chart to trigger the animation
-  participantsChart = new Chart(canvas, {
+  participantsChart1 = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: [1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975,
+                1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985,
+                1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995,
+                1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005,
+                2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015,
+                2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+      datasets: [{
+        label: 'Participants',
+        data: [244, 476, 560, 631, 627, 1402, 1367, 1269, 889, 1215,
+                1049, 1385, 1795, 1204, 1565, 1713, 2056, 2220, 2287, 2460,
+                2285, 2545, 2653, 2970, 3207, 3603, 3636, 3995, 4110, 4291,
+                4876, 5520, 6431, 6813, 6980, 7168, 7620, 8153, 8315, 8945,
+                9603, 9121, 10102, 10061, 10196, 10677, 10914, 11411, 12298, 11502,
+                12058, 12226, 12069, 12150, 11768, 8998, 8527, 9386, 10492, 10350],
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 5,
+        pointHoverRadius: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: {
+        duration: 1500,
+        easing: 'easeOutQuart'
+      },
+      plugins: {
+        title: {
+          display: true,
+          text: 'Jugend forscht Participants Over Time',
+          font: { size: 20 }
+        },
+        legend: { display: false }
+      },
+      scales: {
+        x: { title: { display: true, text: 'Year' } },
+        y: { title: { display: true, text: 'Participants' }, beginAtZero: true }
+      }
+    }
+  });
+});
+
+
+
+let participantsChart2;
+
+Reveal.on('slidechanged', event => {
+  const canvas = event.currentSlide.querySelector('#participantsChart2');
+  if (!canvas) return;
+
+  if (participantsChart2) {
+    participantsChart2.destroy();
+  }
+
+  participantsChart2 = new Chart(canvas, {
     type: 'line',
     data: {
       labels: [1966, 1971, 1980, 1990, 2000, 2010, 2020, 2025],
@@ -145,7 +204,7 @@ Reveal.on('slidechanged', event => {
     options: {
       responsive: true,
       animation: {
-        duration: 1500, // 1.5s animation
+        duration: 1500,
         easing: 'easeOutQuart'
       },
       plugins: {
@@ -162,4 +221,65 @@ Reveal.on('slidechanged', event => {
       }
     }
   });
+});
+
+let pieChart;
+
+Reveal.on('slidechanged', event => {
+  const canvas = event.currentSlide.querySelector('#pieChart');
+  if (!canvas) return;
+
+  if (canvas.chart) {
+    canvas.chart.destroy();
+  }
+
+  canvas.chart = new Chart(canvas.getContext('2d'), {
+    type: 'pie',
+    data: {
+      labels: ["Arbeitswelt", "Biologie", "Chemie", "Geo- und Raumwissenschaften", "Mathematik/Informatik", "Physik", "Technik"],
+      datasets: [{
+        data: [3377, 390, 675, 1245, 870, 985, 1403],
+        backgroundColor: [
+            'rgba(128, 128, 128, 0.7)',
+            'rgba(0, 200, 83, 0.7)',
+            'rgba(255, 193, 7, 0.7)',
+            'rgba(255, 87, 34, 0.7)',
+            'rgba(33, 150, 243, 0.7)',
+            'rgba(156, 39, 176, 0.7)',
+            'rgba(96, 125, 139, 0.7)'
+        ],
+        borderColor: [
+            'rgba(128, 128, 128, 1)',
+            'rgba(0, 200, 83, 1)',
+            'rgba(255, 193, 7, 1)',
+            'rgba(255, 87, 34, 1)',
+            'rgba(33, 150, 243, 1)',
+            'rgba(156, 39, 176, 1)',
+            'rgba(96, 125, 139, 1)'
+        ],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      animation: {
+        animateRotate: true,
+        animateScale: true,
+        duration: 2000,
+        easing: 'easeOutQuart'
+      },
+      plugins: {
+        title: {
+          display: true,
+          text: 'Example Pie Chart',
+          font: { size: 20 }
+        },
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+
+  canvas.chart.reset();
+  canvas.chart.update();
 });

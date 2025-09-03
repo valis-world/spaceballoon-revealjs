@@ -59,9 +59,16 @@
 					</section>
 
 					<section>
-					<canvas id="participantsChart"></canvas>
+						<canvas id="participantsChart1"></canvas>
 					</section>
 
+					<section>
+						<canvas id="participantsChart2"></canvas>
+					</section>
+
+					<section>
+						<canvas id="pieChart" class="chart-container"></canvas>
+					</section>
 
 					<section>
 						<h2>Competition Rounds</h2>
@@ -214,7 +221,6 @@
 
 				<section>
 					<h3>Meeting expert mentors</h3>
-					<!---->
 				<section>
 
 				<section>
@@ -237,8 +243,6 @@
 
 		<script src="dist/reveal.js"></script>
 		<script src="script.js"></script>
-		<!-- Chart plugin -->
-		<!-- Chart plugin -->
 		<script src="plugin/chart/chart.min.js"></script>
 		<script src="plugin/chart/plugin.js"></script>
 		<script>
@@ -248,11 +252,11 @@
 				plugins: [ RevealChart ],
 				chart: {
 					defaults: {
-						color: 'lightgray', // color of labels
+						color: 'darkgray',
 						scale: {
 							beginAtZero: true,
 							ticks: { stepSize: 1 },
-							grid: { color: "lightgray" } , // color of grid lines
+							grid: { color: "darkgray" } ,
 						},
 					},
 					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
