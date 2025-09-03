@@ -23,14 +23,19 @@
 						<p>Bodensee-Gymnasium Lindau Germany</p>
 					</div>
 					<div class="photo-placeholder">
-						<p>[Team Photo]</p>
+						<p>Fancy backround</p>
 					</div>
 				</section>
 				<section>
 					<section>
-						<div style="display: flex; align-items: center; justify-content: center; gap: 1em;">
-    						<img src="resources/svgs/JuFoLogo.svg" alt="Jugend forscht" style="max-width: 300px; height: auto;">
+						<div class="centered-svg offset" style="--offset-y: -10%">
+							<img src="resources/svgs/JuFoLogo.svg" alt="Jugend forscht" style="max-width: 300px; height: auto;">
+						</div>
+						<div class="flex-center offset" style="--offset-y: 5%">
     						<h2 style="margin: 0;">Jugend forscht</h2>
+						</div>
+						<div class="flex-center offset" style="--offset-y: 5%">
+							<h3>What is it?</h3>
 						</div>
 					</section>
 
@@ -42,14 +47,21 @@
 						<h3>Competition Categories</h3>
 						<div class="chart-placeholder">
 							<ul>
-								<li>Physics</li>
+								<li>World of Work</li>
 								<li>Biology</li>
 								<li>Chemistry</li>
-								<li>Workspace and Humanitarian</li>
-								<li>Engineering</li>
+								<li>Geosciences and Space Sciences</li>
+								<li>Mathematics / Computer Science</li>
+								<li>Physics</li>
+								<li>Engineering / Technology</li>
 							</ul>
 						</div>
 					</section>
+
+					<section>
+					<canvas id="participantsChart"></canvas>
+					</section>
+
 
 					<section>
 						<h2>Competition Rounds</h2>
@@ -59,16 +71,6 @@
 							<h3 class="fragment" style="font-weight: 300;">National</h3>
 						</div>
 					</section>
-
-					<section>
-						<h2>US Science Fairs</h2>
-						<ul>
-							<li>More localized events</li>
-							<li>Various formats and scales</li>
-							<li>Multiple independent competitions</li>
-						</ul>
-					</section>
-
 					<!--
 					<section>
 						<h3>National Recognition</h3>
@@ -104,7 +106,7 @@
 							<li>1965: ~200 participants</li>
 							<li>1975: ~2,000 participants</li>
 							<li>1995: ~5,000 participants</li>
-							<li>2023: Over 10,000 participants</li>
+							<li>2023: Over 10,000 participants</li> <!--Need real data-->
 						</ul>
 					</section>
 
@@ -114,7 +116,7 @@
 							<li>12,000+ projects annually</li>
 							<li>250+ regional competitions</li>
 							<li>16 state-level events</li>
-							<li>1 national final</li>
+							<li>1 national final</li> <!--is it needed?-->
 						</ul>
 					</section>
 				</section>
@@ -138,7 +140,7 @@
 								<p>Streaming live video from near space to a Youtube livestream</p>
 							</div>
 							<div class="image-placeholder">
-								[Payload Sketch]
+								Photo or vid from the Stratosphere
 							</div>
 						</div>
 					</section>
@@ -174,9 +176,9 @@
 					</section>
 
 					<section>
-						<h3>Fun Fact!</h3>
-						<p>Can you guess how high our balloon went? 🎈</p>
-						<p class="highlight-blue">~30 kilometers!</p>
+						<!--<h3>Fun Fact!</h3> -->
+						<p>Can you guess how high our balloon went?</p>
+						<p class="highlight-blue">~25 kilometers!</p>
 					</section>
 				</section>
 
@@ -191,8 +193,29 @@
 							<li>Discovering other projects</li>
 							<li>Feeling like mini scientists</li>
 						</ul>
-					</section>
+						
+					<section>
+					<h3>Meeting expert mentors</h3>
+					<!--some expert photos and their history-->
+					<section>
+
+					<section>
+					<h3>Discovering other projects</h3>
+					<!--project photos and ideas-->
+					<section>
+
+					<section>
+					<h3>Feeling like mini schientis</h3>
+					<!--some competition photos, like https://prod.liveshare.vsengsaas.visualstudio.com/join?A8648456B4901D3BBC17D54D1372FE7C149E-->
+					<section>
+
+					
 				</section>
+
+				<section>
+					<h3>Meeting expert mentors</h3>
+					<!---->
+				<section>
 
 				<section>
 					<h2>Thank You!</h2>
@@ -214,7 +237,29 @@
 
 		<script src="dist/reveal.js"></script>
 		<script src="script.js"></script>
+		<!-- Chart plugin -->
+		<!-- Chart plugin -->
+		<script src="plugin/chart/chart.min.js"></script>
+		<script src="plugin/chart/plugin.js"></script>
 		<script>
+			Reveal.initialize({
+				center: true,
+				hash: true,
+				plugins: [ RevealChart ],
+				chart: {
+					defaults: {
+						color: 'lightgray', // color of labels
+						scale: {
+							beginAtZero: true,
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+				},
+			});
 		</script>
 	</body>
 </html>

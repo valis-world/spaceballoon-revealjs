@@ -1,8 +1,4 @@
 // This file initializes the reveal.js presentation and contains custom javascript for animations and slide-specific interactions.
-Reveal.initialize({
-    center: true,
-    hash: true
-});
 let animationState = {
     timeoutId: null,
     animationFrameId: null
@@ -118,3 +114,52 @@ document.addEventListener('click', function(e) {
         e.stopPropagation();
     }
 }, true);
+
+let participantsChart; // global chart variable
+
+Reveal.on('slidechanged', event => {
+  const canvas = event.currentSlide.querySelector('#participantsChart');
+  if (!canvas) return;
+
+  // Destroy previous chart if it exists
+  if (participantsChart) {
+    participantsChart.destroy();
+  }
+
+  // Recreate the chart to trigger the animation
+  participantsChart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: [1966, 1971, 1980, 1990, 2000, 2010, 2020, 2025],
+      datasets: [{
+        label: 'Participants',
+        data: [244, 1402, 1565, 3207, 6980, 10196, 11768, 10350],
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 5,
+        pointHoverRadius: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: {
+        duration: 1500, // 1.5s animation
+        easing: 'easeOutQuart'
+      },
+      plugins: {
+        title: {
+          display: true,
+          text: 'Jugend forscht Participants Over Time',
+          font: { size: 20 }
+        },
+        legend: { display: false }
+      },
+      scales: {
+        x: { title: { display: true, text: 'Year' } },
+        y: { title: { display: true, text: 'Participants' }, beginAtZero: true }
+      }
+    }
+  });
+});
