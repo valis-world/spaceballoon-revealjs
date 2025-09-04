@@ -115,8 +115,6 @@ document.addEventListener('click', function(e) {
     }
 }, true);
 
-
-
 let participantsChart1;
 
 Reveal.on('slidechanged', event => {
@@ -127,7 +125,9 @@ Reveal.on('slidechanged', event => {
     participantsChart1.destroy();
   }
 
-  participantsChart1 = new Chart(canvas, {
+  const ctx = canvas.getContext("2d");
+
+  participantsChart1 = new Chart(ctx, {
     type: 'line',
     data: {
       labels: [1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975,
@@ -144,37 +144,100 @@ Reveal.on('slidechanged', event => {
                 4876, 5520, 6431, 6813, 6980, 7168, 7620, 8153, 8315, 8945,
                 9603, 9121, 10102, 10061, 10196, 10677, 10914, 11411, 12298, 11502,
                 12058, 12226, 12069, 12150, 11768, 8998, 8527, 9386, 10492, 10350],
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: function(context) {
+          const chart = context.chart;
+          const {ctx, chartArea} = chart;
+          if (!chartArea) { return null; }
+          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          gradient.addColorStop(0, "rgba(2,175,177,1)");
+          gradient.addColorStop(0.5, "rgba(28,142,182,1)");
+          gradient.addColorStop(1, "rgba(54,99,187,1)");
+          return gradient;
+        },
+        backgroundColor: function(context) {
+          const chart = context.chart;
+          const {ctx, chartArea} = chart;
+          if (!chartArea) { return null; }
+          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          gradient.addColorStop(0, "rgba(2,175,177,0.6)");
+          gradient.addColorStop(0.5, "rgba(28,142,182,0.4)");
+          gradient.addColorStop(1, "rgba(54,99,187,0.3)");
+          return gradient;
+        },
         fill: true,
         tension: 0.4,
-        pointRadius: 5,
-        pointHoverRadius: 8
+        pointRadius: 6,
+        pointHoverRadius: 10,
+        pointBackgroundColor: "white",
+        pointBorderColor: function(context) {
+          const chart = context.chart;
+          const yScale = chart.scales.y;
+          const value = context.dataset.data[context.dataIndex];
+          
+          if (!yScale || yScale.min === undefined || yScale.max === undefined || yScale.min === yScale.max) {
+            return 'rgba(2,175,177,1)';
+          }
+
+          const colorStops = {
+            c1: { r: 2, g: 175, b: 177 },
+            c2: { r: 28, g: 142, b: 182 },
+            c3: { r: 54, g: 99, b: 187 }
+          };
+
+          const yPercent = (value - yScale.min) / (yScale.max - yScale.min);
+          const gradientPercent = 1 - yPercent;
+
+          let r, g, b;
+
+          if (gradientPercent <= 0.5) {
+            const interPercent = gradientPercent / 0.5;
+            r = Math.round(colorStops.c1.r * (1 - interPercent) + colorStops.c2.r * interPercent);
+            g = Math.round(colorStops.c1.g * (1 - interPercent) + colorStops.c2.g * interPercent);
+            b = Math.round(colorStops.c1.b * (1 - interPercent) + colorStops.c2.b * interPercent);
+          } else {
+            const interPercent = (gradientPercent - 0.5) / 0.5;
+            r = Math.round(colorStops.c2.r * (1 - interPercent) + colorStops.c3.r * interPercent);
+            g = Math.round(colorStops.c2.g * (1 - interPercent) + colorStops.c3.g * interPercent);
+            b = Math.round(colorStops.c2.b * (1 - interPercent) + colorStops.c3.b * interPercent);
+          }
+
+          return `rgba(${r}, ${g}, ${b}, 1)`;
+        },
+        pointBorderWidth: 3,
       }]
     },
     options: {
       responsive: true,
       animation: {
-        duration: 1500,
-        easing: 'easeOutQuart'
+        duration: 2000,
+        easing: "easeOutBounce"
       },
       plugins: {
         title: {
           display: true,
-          text: 'Jugend forscht Participants Over Time',
-          font: { size: 20 }
+          text: "Jugend forscht Participants Over Time",
+          font: { size: 22, weight: "bold" }
         },
-        legend: { display: false }
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "rgba(0,0,0,0.8)",
+          displayColors: false
+        }
       },
       scales: {
-        x: { title: { display: true, text: 'Year' } },
-        y: { title: { display: true, text: 'Participants' }, beginAtZero: true }
+        x: {
+          title: { display: true, text: "Year" },
+          grid: { color: "rgba(200,200,200,0.2)" }
+        },
+        y: {
+          title: { display: true, text: "Participants" },
+          beginAtZero: true,
+          grid: { color: "rgba(200,200,200,0.2)" }
+        }
       }
     }
   });
 });
-
-
 
 let participantsChart2;
 
@@ -186,42 +249,110 @@ Reveal.on('slidechanged', event => {
     participantsChart2.destroy();
   }
 
-  participantsChart2 = new Chart(canvas, {
+  const ctx = canvas.getContext("2d");
+
+  participantsChart2 = new Chart(ctx, {
     type: 'line',
     data: {
       labels: [1966, 1971, 1980, 1990, 2000, 2010, 2020, 2025],
       datasets: [{
         label: 'Participants',
         data: [244, 1402, 1565, 3207, 6980, 10196, 11768, 10350],
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: function(context) {
+          const chart = context.chart;
+          const {ctx, chartArea} = chart;
+          if (!chartArea) { return null; }
+          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          gradient.addColorStop(0, "rgba(2,175,177,1)");
+          gradient.addColorStop(0.5, "rgba(28,142,182,1)");
+          gradient.addColorStop(1, "rgba(54,99,187,1)");
+          return gradient;
+        },
+        backgroundColor: function(context) {
+          const chart = context.chart;
+          const {ctx, chartArea} = chart;
+          if (!chartArea) { return null; }
+          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          gradient.addColorStop(0, "rgba(2,175,177,0.6)");
+          gradient.addColorStop(0.5, "rgba(28,142,182,0.4)");
+          gradient.addColorStop(1, "rgba(54,99,187,0.3)");
+          return gradient;
+        },
         fill: true,
         tension: 0.4,
-        pointRadius: 5,
-        pointHoverRadius: 8
+        pointRadius: 6,
+        pointHoverRadius: 10,
+        pointBackgroundColor: "white",
+        pointBorderColor: function(context) {
+          const chart = context.chart;
+          const yScale = chart.scales.y;
+          const value = context.dataset.data[context.dataIndex];
+          
+          if (!yScale || yScale.min === undefined || yScale.max === undefined || yScale.min === yScale.max) {
+            return 'rgba(2,175,177,1)';
+          }
+
+          const colorStops = {
+            c1: { r: 2, g: 175, b: 177 },
+            c2: { r: 28, g: 142, b: 182 },
+            c3: { r: 54, g: 99, b: 187 }
+          };
+
+          const yPercent = (value - yScale.min) / (yScale.max - yScale.min);
+          const gradientPercent = 1 - yPercent;
+
+          let r, g, b;
+
+          if (gradientPercent <= 0.5) {
+            const interPercent = gradientPercent / 0.5;
+            r = Math.round(colorStops.c1.r * (1 - interPercent) + colorStops.c2.r * interPercent);
+            g = Math.round(colorStops.c1.g * (1 - interPercent) + colorStops.c2.g * interPercent);
+            b = Math.round(colorStops.c1.b * (1 - interPercent) + colorStops.c2.b * interPercent);
+          } else {
+            const interPercent = (gradientPercent - 0.5) / 0.5;
+            r = Math.round(colorStops.c2.r * (1 - interPercent) + colorStops.c3.r * interPercent);
+            g = Math.round(colorStops.c2.g * (1 - interPercent) + colorStops.c3.g * interPercent);
+            b = Math.round(colorStops.c2.b * (1 - interPercent) + colorStops.c3.b * interPercent);
+          }
+
+          return `rgba(${r}, ${g}, ${b}, 1)`;
+        },
+        pointBorderWidth: 3,
       }]
     },
     options: {
       responsive: true,
       animation: {
-        duration: 1500,
-        easing: 'easeOutQuart'
+        duration: 2000,
+        easing: "easeOutBounce"
       },
       plugins: {
         title: {
           display: true,
-          text: 'Jugend forscht Participants Over Time',
-          font: { size: 20 }
+          text: "Jugend forscht Participants Over Time",
+          font: { size: 22, weight: "bold" }
         },
-        legend: { display: false }
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "rgba(0,0,0,0.8)",
+          displayColors: false
+        }
       },
       scales: {
-        x: { title: { display: true, text: 'Year' } },
-        y: { title: { display: true, text: 'Participants' }, beginAtZero: true }
+        x: {
+          title: { display: true, text: "Year" },
+          grid: { color: "rgba(200,200,200,0.2)" }
+        },
+        y: {
+          title: { display: true, text: "Participants" },
+          beginAtZero: true,
+          grid: { color: "rgba(200,200,200,0.2)" }
+        }
       }
     }
   });
 });
+
 
 let pieChart;
 
@@ -234,35 +365,31 @@ Reveal.on('slidechanged', event => {
   }
 
   canvas.chart = new Chart(canvas.getContext('2d'), {
-    type: 'pie',
+    type: 'doughnut',
     data: {
       labels: ["Arbeitswelt", "Biologie", "Chemie", "Geo- und Raumwissenschaften", "Mathematik/Informatik", "Physik", "Technik"],
       datasets: [{
+        label: 'Projects',
         data: [3377, 390, 675, 1245, 870, 985, 1403],
         backgroundColor: [
-            'rgba(128, 128, 128, 0.7)',
-            'rgba(0, 200, 83, 0.7)',
-            'rgba(255, 193, 7, 0.7)',
-            'rgba(255, 87, 34, 0.7)',
-            'rgba(33, 150, 243, 0.7)',
-            'rgba(156, 39, 176, 0.7)',
-            'rgba(96, 125, 139, 0.7)'
+          'rgba(72, 61, 139, 0.8)','rgba(65, 105, 225, 0.8)','rgba(28, 142, 182, 0.8)','rgba(63, 224, 208, 0.8)','rgba(0, 200, 83, 0.8)','rgba(255, 193, 7, 0.8)','rgba(96, 125, 139, 0.8)'
         ],
-        borderColor: [
-            'rgba(128, 128, 128, 1)',
-            'rgba(0, 200, 83, 1)',
-            'rgba(255, 193, 7, 1)',
-            'rgba(255, 87, 34, 1)',
-            'rgba(33, 150, 243, 1)',
-            'rgba(156, 39, 176, 1)',
-            'rgba(96, 125, 139, 1)'
+        hoverBackgroundColor: [
+          'rgba(72, 61, 139, 1)','rgba(65, 105, 225, 1)','rgba(28, 142, 182, 1)','rgba(63, 224, 208, 1)','rgba(0, 200, 83, 1)','rgba(255, 193, 7, 1)','rgba(96, 125, 139, 1)'
         ],
-        borderWidth: 2
+        borderColor: 'rgba(255, 255, 255, 0.5)',
+        borderWidth: 2,
+        hoverOffset: 20,
+        borderRadius: 8,
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: true,
+      cutout: '60%',
+      layout: {
+        padding: 30
+      },
       animation: {
         animateRotate: true,
         animateScale: true,
@@ -272,14 +399,24 @@ Reveal.on('slidechanged', event => {
       plugins: {
         title: {
           display: true,
-          text: 'Example Pie Chart',
-          font: { size: 20 }
+          text: 'Projects by Field',
+          font: { size: 22, weight: 'bold' }
         },
-        legend: { position: 'bottom' }
+        legend: {
+          position: 'right',
+          labels: {
+            padding: 20,
+            boxWidth: 15
+          }
+        },
+        tooltip: {
+            backgroundColor: "rgba(0,0,0,0.8)",
+            padding: 10,
+        }
       }
     }
   });
-
   canvas.chart.reset();
   canvas.chart.update();
 });
+
