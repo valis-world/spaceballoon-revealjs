@@ -367,7 +367,7 @@ Reveal.on('slidechanged', event => {
   canvas.chart = new Chart(canvas.getContext('2d'), {
     type: 'doughnut',
     data: {
-      labels: ["Arbeitswelt", "Biologie", "Chemie", "Geo- und Raumwissenschaften", "Mathematik/Informatik", "Physik", "Technik"],
+      labels: ["World of Work", "Biology", "Chemistry", "Geosciences and Space Sciences", "Mathematics / Computer Science", "Physics", "Engineering / Technology"],
       datasets: [{
         label: 'Projects',
         data: [3377, 390, 675, 1245, 870, 985, 1403],
@@ -420,3 +420,122 @@ Reveal.on('slidechanged', event => {
   canvas.chart.update();
 });
 
+let Altitude;
+
+Reveal.on('slidechanged', event => {
+  const canvas = event.currentSlide.querySelector('#Altitude');
+  if (!canvas) return;
+
+  if (Altitude) {
+    Altitude.destroy();
+  }
+
+  const ctx = canvas.getContext("2d");
+
+  Altitude = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68,
+              72, 76, 80, 84, 88, 82, 86, 90, 94, 98, 102, 106, 110, 114, 118, 122,
+              126, 130, 134, 138, 142, 146, 50, 154, 158, 162, 166, 170, 174], // Data needed
+      datasets: [{
+        label: 'Altitude',
+        data: [450, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000,
+              11000, 12000, 13000, 14000, 15000, 16000, 17000, 18000, 19000, 20000,
+              21000, 22000, 23000, 24000, 25000, 26000, 27000, 28000, 29000, 30000,
+              28000, 26000, 24000, 22000, 20000, 18000, 16000, 14000, 12000, 10000,
+              8000, 6000, 4000, 2000, 400], // Data needed
+        borderColor: function(context) {
+          const chart = context.chart;
+          const {ctx, chartArea} = chart;
+          if (!chartArea) { return null; }
+          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          gradient.addColorStop(0, "rgba(2,175,177,1)");
+          gradient.addColorStop(0.5, "rgba(28,142,182,1)");
+          gradient.addColorStop(1, "rgba(54,99,187,1)");
+          return gradient;
+        },
+        backgroundColor: function(context) {
+          const chart = context.chart;
+          const {ctx, chartArea} = chart;
+          if (!chartArea) { return null; }
+          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          gradient.addColorStop(0, "rgba(2,175,177,0.6)");
+          gradient.addColorStop(0.5, "rgba(28,142,182,0.4)");
+          gradient.addColorStop(1, "rgba(54,99,187,0.3)");
+          return gradient;
+        },
+        fill: true,
+        tension: 0.4,
+        pointRadius: 6,
+        pointHoverRadius: 10,
+        pointBackgroundColor: "white",
+        pointBorderColor: function(context) {
+          const chart = context.chart;
+          const yScale = chart.scales.y;
+          const value = context.dataset.data[context.dataIndex];
+          
+          if (!yScale || yScale.min === undefined || yScale.max === undefined || yScale.min === yScale.max) {
+            return 'rgba(2,175,177,1)';
+          }
+
+          const colorStops = {
+            c1: { r: 2, g: 175, b: 177 },
+            c2: { r: 28, g: 142, b: 182 },
+            c3: { r: 54, g: 99, b: 187 }
+          };
+
+          const yPercent = (value - yScale.min) / (yScale.max - yScale.min);
+          const gradientPercent = 1 - yPercent;
+
+          let r, g, b;
+
+          if (gradientPercent <= 0.5) {
+            const interPercent = gradientPercent / 0.5;
+            r = Math.round(colorStops.c1.r * (1 - interPercent) + colorStops.c2.r * interPercent);
+            g = Math.round(colorStops.c1.g * (1 - interPercent) + colorStops.c2.g * interPercent);
+            b = Math.round(colorStops.c1.b * (1 - interPercent) + colorStops.c2.b * interPercent);
+          } else {
+            const interPercent = (gradientPercent - 0.5) / 0.5;
+            r = Math.round(colorStops.c2.r * (1 - interPercent) + colorStops.c3.r * interPercent);
+            g = Math.round(colorStops.c2.g * (1 - interPercent) + colorStops.c3.g * interPercent);
+            b = Math.round(colorStops.c2.b * (1 - interPercent) + colorStops.c3.b * interPercent);
+          }
+
+          return `rgba(${r}, ${g}, ${b}, 1)`;
+        },
+        pointBorderWidth: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: {
+        duration: 2000,
+        easing: "easeOutBounce"
+      },
+      plugins: {
+        title: {
+          display: true,
+          text: "Jugend forscht Participants Over Time",
+          font: { size: 22, weight: "bold" }
+        },
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "rgba(0,0,0,0.8)",
+          displayColors: false
+        }
+      },
+      scales: {
+        x: {
+          title: { display: true, text: "Year" },
+          grid: { color: "rgba(200,200,200,0.2)" }
+        },
+        y: {
+          title: { display: true, text: "Participants" },
+          beginAtZero: true,
+          grid: { color: "rgba(200,200,200,0.2)" }
+        }
+      }
+    }
+  });
+});
