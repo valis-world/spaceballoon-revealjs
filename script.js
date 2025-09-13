@@ -115,137 +115,13 @@ document.addEventListener('click', function(e) {
     }
 }, true);
 
-let participantsChart1;
+let participantsChart;
 
 Reveal.on('slidechanged', event => {
-  const canvas = event.currentSlide.querySelector('#participantsChart1');
+  const canvas = event.currentSlide.querySelector('#participantsChart');
   if (!canvas) return;
 
-  if (participantsChart1) {
-    participantsChart1.destroy();
-  }
-
-  const ctx = canvas.getContext("2d");
-
-  participantsChart1 = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: [1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975,
-                1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985,
-                1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995,
-                1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005,
-                2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015,
-                2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
-      datasets: [{
-        label: 'Participants',
-        data: [244, 476, 560, 631, 627, 1402, 1367, 1269, 889, 1215,
-                1049, 1385, 1795, 1204, 1565, 1713, 2056, 2220, 2287, 2460,
-                2285, 2545, 2653, 2970, 3207, 3603, 3636, 3995, 4110, 4291,
-                4876, 5520, 6431, 6813, 6980, 7168, 7620, 8153, 8315, 8945,
-                9603, 9121, 10102, 10061, 10196, 10677, 10914, 11411, 12298, 11502,
-                12058, 12226, 12069, 12150, 11768, 8998, 8527, 9386, 10492, 10350],
-        borderColor: function(context) {
-          const chart = context.chart;
-          const {ctx, chartArea} = chart;
-          if (!chartArea) { return null; }
-          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-          gradient.addColorStop(0, "rgba(2,175,177,1)");
-          gradient.addColorStop(0.5, "rgba(28,142,182,1)");
-          gradient.addColorStop(1, "rgba(54,99,187,1)");
-          return gradient;
-        },
-        backgroundColor: function(context) {
-          const chart = context.chart;
-          const {ctx, chartArea} = chart;
-          if (!chartArea) { return null; }
-          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-          gradient.addColorStop(0, "rgba(2,175,177,0.6)");
-          gradient.addColorStop(0.5, "rgba(28,142,182,0.4)");
-          gradient.addColorStop(1, "rgba(54,99,187,0.3)");
-          return gradient;
-        },
-        fill: true,
-        tension: 0.4,
-        pointRadius: 6,
-        pointHoverRadius: 10,
-        pointBackgroundColor: "white",
-        pointBorderColor: function(context) {
-          const chart = context.chart;
-          const yScale = chart.scales.y;
-          const value = context.dataset.data[context.dataIndex];
-          
-          if (!yScale || yScale.min === undefined || yScale.max === undefined || yScale.min === yScale.max) {
-            return 'rgba(2,175,177,1)';
-          }
-
-          const colorStops = {
-            c1: { r: 2, g: 175, b: 177 },
-            c2: { r: 28, g: 142, b: 182 },
-            c3: { r: 54, g: 99, b: 187 }
-          };
-
-          const yPercent = (value - yScale.min) / (yScale.max - yScale.min);
-          const gradientPercent = 1 - yPercent;
-
-          let r, g, b;
-
-          if (gradientPercent <= 0.5) {
-            const interPercent = gradientPercent / 0.5;
-            r = Math.round(colorStops.c1.r * (1 - interPercent) + colorStops.c2.r * interPercent);
-            g = Math.round(colorStops.c1.g * (1 - interPercent) + colorStops.c2.g * interPercent);
-            b = Math.round(colorStops.c1.b * (1 - interPercent) + colorStops.c2.b * interPercent);
-          } else {
-            const interPercent = (gradientPercent - 0.5) / 0.5;
-            r = Math.round(colorStops.c2.r * (1 - interPercent) + colorStops.c3.r * interPercent);
-            g = Math.round(colorStops.c2.g * (1 - interPercent) + colorStops.c3.g * interPercent);
-            b = Math.round(colorStops.c2.b * (1 - interPercent) + colorStops.c3.b * interPercent);
-          }
-
-          return `rgba(${r}, ${g}, ${b}, 1)`;
-        },
-        pointBorderWidth: 3,
-      }]
-    },
-    options: {
-      responsive: true,
-      animation: {
-        duration: 2000,
-        easing: "easeOutBounce"
-      },
-      plugins: {
-        title: {
-          display: true,
-          text: "Jugend forscht Participants Over Time",
-          font: { size: 22, weight: "bold" }
-        },
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: "rgba(0,0,0,0.8)",
-          displayColors: false
-        }
-      },
-      scales: {
-        x: {
-          title: { display: true, text: "Year" },
-          grid: { color: "rgba(200,200,200,0.2)" }
-        },
-        y: {
-          title: { display: true, text: "Participants" },
-          beginAtZero: true,
-          grid: { color: "rgba(200,200,200,0.2)" }
-        }
-      }
-    }
-  });
-});
-
-let participantsChart2;
-
-Reveal.on('slidechanged', event => {
-  const canvas = event.currentSlide.querySelector('#participantsChart2');
-  if (!canvas) return;
-
-  if (participantsChart2) participantsChart2.destroy();
+  if (participantsChart) participantsChart.destroy();
 
   const ctx = canvas.getContext("2d");
 
@@ -347,10 +223,10 @@ Reveal.on('slidechanged', event => {
 });
 
 
-let pieChart;
+let categoriesChart;
 
 Reveal.on('slidechanged', event => {
-  const canvas = event.currentSlide.querySelector('#pieChart');
+  const canvas = event.currentSlide.querySelector('#categoriesChart');
   if (!canvas) return;
 
   if (canvas.chart) {
@@ -360,7 +236,7 @@ Reveal.on('slidechanged', event => {
   canvas.chart = new Chart(canvas.getContext('2d'), {
     type: 'doughnut',
     data: {
-      labels: ["Arbeitswelt", "Biologie", "Chemie", "Geo- und Raumwissenschaften", "Mathematik/Informatik", "Physik", "Technik"],
+      labels: ["World of Work", "Biology", "Chemistry", "Geosciences and Space Sciences", "Mathematics / Computer Science", "Physics", "Engineering / Technology"],
       datasets: [{
         label: 'Projects',
         data: [3377, 390, 675, 1245, 870, 985, 1403],
