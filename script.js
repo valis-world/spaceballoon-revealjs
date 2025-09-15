@@ -18,9 +18,9 @@ Reveal.on('slidechanged', function(event) {
 
     const el = document.getElementById('participant-count');
 
-    if (event.indexh === 2 && event.indexv === 0) {
+    if (event.indexh === 3 && event.indexv === 0) {
         const target = 10000;
-        const duration = 4000;
+        const duration = 5000;
         const delay = 500;
 
         let startTime = null;
