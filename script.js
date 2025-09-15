@@ -238,7 +238,7 @@ Reveal.on('slidechanged', event => {
   canvas.chart = new Chart(canvas.getContext('2d'), {
     type: 'doughnut',
     data: {
-      labels: ["World of Work", "Biology", "Chemistry", "Geosciences and Space Sciences", "Mathematics / Computer Science", "Physics", "Engineering / Technology"],
+      labels: ["Work enviroment", "Biology", "Chemistry", "Geosciences and Space Sciences", "Mathematics / Computer Science", "Physics", "Engineering / Technology"],
       datasets: [{
         label: 'Projects',
         data: [3377, 390, 675, 1245, 870, 985, 1403],
