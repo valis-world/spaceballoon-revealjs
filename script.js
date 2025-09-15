@@ -121,9 +121,9 @@ Reveal.on('slidechanged', event => {
   const canvas = event.currentSlide.querySelector('#participantsChart');
   if (!canvas) return;
 
-  if (participantsChart) participantsChart.destroy();
-
-  const ctx = canvas.getContext("2d");
+  if (canvas.chart) {
+    canvas.chart.destroy();
+  }
 
   const data = [
     {x: 1966, y: 244},
@@ -139,7 +139,7 @@ Reveal.on('slidechanged', event => {
   const totalDuration = 2000; // total animation time
   const pointDelay = totalDuration / data.length;
 
-  participantsChart2 = new Chart(ctx, {
+  canvas.chart = new Chart(canvas.getContext('2d'), {
     type: 'line',
     data: {
       datasets: [{
@@ -220,6 +220,8 @@ Reveal.on('slidechanged', event => {
       }
     }
   });
+  canvas.chart.reset();
+  canvas.chart.update();
 });
 
 
@@ -246,7 +248,7 @@ Reveal.on('slidechanged', event => {
         hoverBackgroundColor: [
           'rgba(72, 61, 139, 1)','rgba(65, 105, 225, 1)','rgba(28, 142, 182, 1)','rgba(63, 224, 208, 1)','rgba(0, 200, 83, 1)','rgba(255, 193, 7, 1)','rgba(96, 125, 139, 1)'
         ],
-        borderColor: 'rgba(255, 255, 255, 0.5)',
+        borderColor: 'rgba(255, 255, 255, 255)',
         borderWidth: 2,
         hoverOffset: 20,
         borderRadius: 8,
