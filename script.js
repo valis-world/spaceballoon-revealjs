@@ -136,7 +136,7 @@ Reveal.on('slidechanged', event => {
     {x: 2025, y: 10350}
   ];
 
-  const totalDuration = 2000; // total animation time
+  const totalDuration = 2200; // total animation time
   const pointDelay = totalDuration / data.length;
 
   canvas.chart = new Chart(canvas.getContext('2d'), {
@@ -148,7 +148,7 @@ Reveal.on('slidechanged', event => {
         borderColor: "#0f47beff",
         backgroundColor: "transparent",
         fill: false,
-        tension: 0.25,
+        tension: 0.2,
         borderWidth: 2,
         pointRadius: 0, // start hidden
         pointHoverRadius: 5,
@@ -163,7 +163,7 @@ Reveal.on('slidechanged', event => {
       animation: {
         borderDashOffset: {
           duration: totalDuration,
-          easing: 'linear',
+          easing: 'easeInOutCubic',
           from: 1000,
           to: 0
         },
@@ -271,13 +271,15 @@ Reveal.on('slidechanged', event => {
         title: {
           display: true,
           text: 'Projects by Field',
-          font: { size: 22, weight: 'bold' }
+          font: { size: 22, weight: 'bold' },
+          color: "#111"
         },
         legend: {
           position: 'right',
           labels: {
             padding: 20,
-            boxWidth: 15
+            boxWidth: 15,
+            color: "#111"
           }
         },
         tooltip: {
