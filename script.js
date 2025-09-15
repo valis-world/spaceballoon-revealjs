@@ -264,8 +264,8 @@ Reveal.on('slidechanged', event => {
       animation: {
         animateRotate: true,
         animateScale: true,
-        duration: 2000,
-        easing: 'easeOutQuart'
+        duration: 1500,
+        easing: 'easeInOutCubic'
       },
       plugins: {
         title: {
