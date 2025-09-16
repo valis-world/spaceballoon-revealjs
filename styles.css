@@ -47,6 +47,29 @@
     color: #343434;
 }
 
+.reveal .slides .two-column {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+    margin: 0 2% 5% 2%; /* Add margin at bottom and sides */
+}
+
+.reveal .slides .two-column .column {
+    flex: 1.2; /* Slightly increase text column width */
+}
+
+.reveal .slides .two-column .column:first-child {
+    flex: 1.5; /* Reduce image column width */
+    margin-left: -5%; /* Pull images more to the left */
+}
+
+.reveal .slides .two-column img {
+    width: 90%; /* Make images slightly smaller */
+    height: auto;
+    display: block;
+    border-radius: 15px; /* Add rounded corners */
+}
+
 .reveal .slides section .mega-counter {
     font-size: 7.5em;
     font-weight: bold;
