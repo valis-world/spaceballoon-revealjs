@@ -4,6 +4,7 @@ let animationState = {
     animationFrameId: null
 };
 
+// Animate participant count
 let animatingFragments = false;
 
 Reveal.on('slidechanged', function(event) {
@@ -115,6 +116,7 @@ document.addEventListener('click', function(e) {
     }
 }, true);
 
+// Prticipant chart
 let participantsChart;
 
 Reveal.on('slidechanged', event => {
@@ -224,169 +226,7 @@ Reveal.on('slidechanged', event => {
   canvas.chart.update();
 });
 
-
-// Add some CSS for the animation
-const style = document.createElement('style');
-style.textContent = `
-    #temperature {
-        display: inline-block;
-        position: relative;
-    }
-    #temperature.yeet-out {
-        animation: yeet-animation 0.8s cubic-bezier(0.36, 0, 0.66, -0.56);
-        animation-fill-mode: forwards;
-    }
-    #temperature.slide-in {
-        animation: slide-in-animation 0.5s ease-out;
-        animation-fill-mode: forwards;
-    }
-    @keyframes yeet-animation-right {
-        0% {
-            transform: translate(0, 0) rotate(0deg);
-            opacity: 1;
-        }
-        100% {
-            transform: translate(150vw, -100vh) rotate(1080deg) scale(0.1);
-            opacity: 0;
-        }
-    }
-    @keyframes yeet-animation-left {
-        0% {
-            transform: translate(0, 0) rotate(0deg);
-            opacity: 1;
-        }
-        100% {
-            transform: translate(-150vw, -100vh) rotate(-1080deg) scale(0.1);
-            opacity: 0;
-        }
-    }
-    @keyframes slide-in-right {
-        0% {
-            transform: translate(-100vw, 0);
-            opacity: 0;
-        }
-        100% {
-            transform: translate(0, 0);
-            opacity: 1;
-        }
-    }
-    @keyframes slide-in-left {
-        0% {
-            transform: translate(100vw, 0);
-            opacity: 0;
-        }
-        100% {
-            transform: translate(0, 0);
-            opacity: 1;
-        }
-    }
-    #temperature.yeet-right {
-        animation: yeet-animation-right 0.8s cubic-bezier(0.36, 0, 0.66, -0.56);
-        animation-fill-mode: forwards;
-    }
-    #temperature.yeet-left {
-        animation: yeet-animation-left 0.8s cubic-bezier(0.36, 0, 0.66, -0.56);
-        animation-fill-mode: forwards;
-    }
-    #temperature.slide-from-left {
-        animation: slide-in-right 0.5s ease-out;
-        animation-fill-mode: forwards;
-    }
-    #temperature.slide-from-right {
-        animation: slide-in-left 0.5s ease-out;
-        animation-fill-mode: forwards;
-    }
-`;
-document.head.appendChild(style);
-
-// Keep track of temperature state
-let tempState = {
-    isFahrenheit: false,
-    lastSlideIndex: -1,
-    isAnimating: false
-};
-
-// Temperature conversion animation
-Reveal.on('slidechanged', function(event) {
-    const temperatureEl = document.getElementById('temperature');
-    if (!temperatureEl) return;
-
-    if (event.currentSlide.contains(temperatureEl)) {
-        // Always reset to Celsius when arriving at this slide
-        temperatureEl.textContent = '-50 °C';
-        temperatureEl.className = '';
-        tempState.isFahrenheit = false;
-        tempState.isAnimating = false;
-
-        // Always reset fragments when arriving at the slide
-        const fragments = event.currentSlide.querySelectorAll('.fragment');
-        fragments.forEach(fragment => {
-            fragment.classList.remove('visible');
-            fragment.classList.remove('current-fragment');
-        });
-    }
-});
-
-Reveal.on('fragmentshown', function(event) {
-    const temperatureEl = document.getElementById('temperature');
-    if (temperatureEl && event.fragment.classList.contains('convert-temp') && !tempState.isAnimating) {
-        tempState.isAnimating = true;
-        
-        if (!tempState.isFahrenheit) {
-            // Yeet Celsius to the right
-            temperatureEl.classList.add('yeet-right');
-            setTimeout(() => {
-                temperatureEl.textContent = '-58 °F';
-                temperatureEl.classList.remove('yeet-right');
-                temperatureEl.classList.add('slide-from-left');
-                tempState.isFahrenheit = true;
-                tempState.isAnimating = false;
-            }, 800);
-        } else {
-            // Yeet Fahrenheit to the left
-            temperatureEl.classList.add('yeet-left');
-            setTimeout(() => {
-                temperatureEl.textContent = '-50 °C';
-                temperatureEl.classList.remove('yeet-left');
-                temperatureEl.classList.add('slide-from-right');
-                tempState.isFahrenheit = false;
-                tempState.isAnimating = false;
-            }, 800);
-        }
-
-        function animate(currentTime) {
-            if (!startTime) startTime = currentTime;
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-
-            // Easing function for a bouncy effect
-            const easing = function(t) {
-                return 1 + (--t) * t * t * t * t;
-            }
-            
-            const easedProgress = easing(progress);
-            
-            // Calculate current temperature
-            const currentTemp = startCelsius + (endFahrenheit - startCelsius) * easedProgress;
-            
-            // Switch from °C to °F during the animation
-            const unit = progress < 0.5 ? '°C' : '°F';
-            const displayTemp = Math.round(progress < 0.5 ? 
-                currentTemp : 
-                (currentTemp * 9/5) + 32
-            );
-            
-            temperatureEl.textContent = `${displayTemp} ${unit}`;
-            
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            }
-        }
-        
-        requestAnimationFrame(animate);
-    }
-});
-
+// Categories chart
 let categoriesChart;
 
 Reveal.on('slidechanged', event => {
@@ -455,3 +295,59 @@ Reveal.on('slidechanged', event => {
   canvas.chart.update();
 });
 
+// Temperature animation thing
+let tempState = {
+    isFahrenheit: false,
+    lastSlideIndex: -1,
+    isAnimating: false
+};
+
+// Temperature conversion animation
+Reveal.on('slidechanged', function(event) {
+    const temperatureEl = document.getElementById('temperature');
+    if (!temperatureEl) return;
+
+    if (event.currentSlide.contains(temperatureEl)) {
+        // Always reset to Celsius when arriving at this slide
+        temperatureEl.textContent = '-50 °C';
+        temperatureEl.className = '';
+        tempState.isFahrenheit = false;
+        tempState.isAnimating = false;
+
+        // Always reset fragments when arriving at the slide
+        const fragments = event.currentSlide.querySelectorAll('.fragment');
+        fragments.forEach(fragment => {
+            fragment.classList.remove('visible');
+            fragment.classList.remove('current-fragment');
+        });
+    }
+});
+
+Reveal.on('fragmentshown', function(event) {
+    const temperatureEl = document.getElementById('temperature');
+    if (temperatureEl && event.fragment.classList.contains('convert-temp') && !tempState.isAnimating) {
+        tempState.isAnimating = true;
+        
+        if (!tempState.isFahrenheit) {
+            // Yeet Celsius to the right
+            temperatureEl.classList.add('yeet-right');
+            setTimeout(() => {
+                temperatureEl.textContent = '-58 °F';
+                temperatureEl.classList.remove('yeet-right');
+                temperatureEl.classList.add('slide-from-left');
+                tempState.isFahrenheit = true;
+                tempState.isAnimating = false;
+            }, 800);
+        } else {
+            // Yeet Fahrenheit to the left
+            temperatureEl.classList.add('yeet-left');
+            setTimeout(() => {
+                temperatureEl.textContent = '-50 °C';
+                temperatureEl.classList.remove('yeet-left');
+                temperatureEl.classList.add('slide-from-right');
+                tempState.isFahrenheit = false;
+                tempState.isAnimating = false;
+            }, 800);
+        }
+    }
+});
