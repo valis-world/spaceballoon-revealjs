@@ -267,3 +267,25 @@
     border-color: #52BE80;
     background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.95), rgba(82, 190, 128, 0.1));
 }
+
+#temperature.fade-out {
+  opacity: 0;
+  transform: scale(1.25);
+  transition: opacity 1s cubic-bezier(0.7,0,0.84,0), transform 0.3s cubic-bezier(0.7,0,0.84,0);
+}
+#temperature.fade-in {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+
+.celsius-value {
+  color: #0f47be;
+  font-weight: bold;
+  text-shadow: 0 2px 8px #b3d1ff80;
+}
+.fahrenheit-value {
+  color: #2c2c2c;
+  font-weight: bold;
+  text-shadow: 0 2px 8px #1c39828a;
+}
