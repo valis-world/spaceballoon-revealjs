@@ -309,7 +309,7 @@ Reveal.on('slidechanged', function(event) {
 
     if (event.currentSlide.contains(temperatureEl)) {
         // Always reset to Celsius when arriving at this slide
-        temperatureEl.innerHTML = '<span class="celsius-value">-50 °C</span>';
+        temperatureEl.textContent = '-50 °C';
         temperatureEl.className = '';
         tempState.isFahrenheit = false;
         tempState.isAnimating = false;
@@ -327,28 +327,28 @@ Reveal.on('fragmentshown', function(event) {
     const temperatureEl = document.getElementById('temperature');
     if (temperatureEl && event.fragment.classList.contains('convert-temp') && !tempState.isAnimating) {
         tempState.isAnimating = true;
-
-        // Remove any previous animation classes
-        temperatureEl.classList.remove('fade-in');
-        temperatureEl.classList.remove('fade-out');
-
-        // Start fade out
-        temperatureEl.classList.add('fade-out');
-
-        setTimeout(() => {
-            // Switch temperature after fade out
-            if (!tempState.isFahrenheit) {
-                temperatureEl.innerHTML = '<span class="fahrenheit-value">-58 °F</span>';
+        
+        if (!tempState.isFahrenheit) {
+            // Yeet Celsius to the right
+            temperatureEl.classList.add('yeet-right');
+            setTimeout(() => {
+                temperatureEl.textContent = '-58 °F';
+                temperatureEl.classList.remove('yeet-right');
+                temperatureEl.classList.add('slide-from-left');
                 tempState.isFahrenheit = true;
-            } else {
-                temperatureEl.innerHTML = '<span class="celsius-value">-50 °C</span>';
+                tempState.isAnimating = false;
+            }, 800);
+        } else {
+            // Yeet Fahrenheit to the left
+            temperatureEl.classList.add('yeet-left');
+            setTimeout(() => {
+                temperatureEl.textContent = '-50 °C';
+                temperatureEl.classList.remove('yeet-left');
+                temperatureEl.classList.add('slide-from-right');
                 tempState.isFahrenheit = false;
-            }
-            // Fade in
-            temperatureEl.classList.remove('fade-out');
-            temperatureEl.classList.add('fade-in');
-            tempState.isAnimating = false;
-        }, 350); // match transition duration
+                tempState.isAnimating = false;
+            }, 800);
+        }
     }
 });
 
