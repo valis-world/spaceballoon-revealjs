@@ -409,3 +409,136 @@ Reveal.on('fragmentshown', function(event) {
         }, 350);
     }
 });
+
+// Flight data chart
+Reveal.on('slidechanged', async event => {
+  const canvas = event.currentSlide.querySelector('#flightDataChart');
+  if (!canvas) return;
+
+  if (canvas.chart) {
+    canvas.chart.destroy();
+  }
+
+  try {
+    const response = await fetch('resources/data/climate.csv');
+    const csvData = await response.text();
+    const lines = csvData.split('\n').slice(1); // Skip header
+
+    // Sample the data to avoid performance issues
+    const sampledLines = lines.filter((_, i) => i % 100 === 0);
+
+    const flightData = sampledLines.map(line => {
+      const [timestamp, pressure, temp, humidity, altitude] = line.split(',');
+      return {
+        time: parseFloat(timestamp),
+        altitude: parseFloat(altitude)
+      };
+    }).filter(d => !isNaN(d.time) && !isNaN(d.altitude)); // Filter out any parsing errors
+
+    if (flightData.length === 0) return;
+
+    const startTime = flightData[0].time;
+    const labels = flightData.map(d => ((d.time - startTime) / 60).toFixed(1)); // Time in minutes from start
+    const altitudeData = flightData.map(d => d.altitude);
+
+    const totalDuration = 2200;
+
+    canvas.chart = new Chart(canvas.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Altitude (m)',
+          data: altitudeData,
+          borderColor: "#0f47beff",
+          backgroundColor: "transparent",
+          fill: false,
+          tension: 0.2,
+          borderWidth: 2,
+          pointRadius: 0, // start hidden
+          pointHoverRadius: 5,
+          pointBackgroundColor: "#0f47beff",
+          pointBorderColor: "#fff",
+          pointBorderWidth: 1,
+          borderDash: [1000, 1000] // hides line initially
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+          borderDashOffset: {
+            duration: totalDuration,
+            easing: 'easeInOutCubic',
+            from: 1000,
+            to: 0
+          },
+          onProgress: (animation) => {
+            const chart = animation.chart;
+            const meta = chart.getDatasetMeta(0);
+            const progress = animation.currentStep / animation.numSteps;
+  
+            // show points after the line has reached them
+            meta.data.forEach((point, index) => {
+              if (progress > index / (meta.data.length - 1)) {
+                point.options.radius = 1; // Smaller points for dense data
+              } else {
+                point.options.radius = 0;
+              }
+            });
+  
+            chart.draw();
+          }
+        },
+        plugins: {
+          title: {
+            display: true,
+            text: 'Flight Altitude Over Time',
+            font: { size: 20, weight: 'bold' },
+            color: '#111'
+          },
+          legend: {
+            display: false
+          },
+          tooltip: {
+            backgroundColor: "rgba(0,0,0,0.8)",
+            displayColors: false,
+            titleFont: { weight: "bold" },
+            bodyFont: { size: 13 }
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Time (minutes)'
+            },
+            grid: { 
+                color: "rgba(0,0,0,0.05)" 
+            },
+            ticks: { 
+                color: "#333",
+                maxTicksLimit: 10 // Limit number of ticks for readability
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Altitude (m)'
+            },
+            beginAtZero: true,
+            grid: {
+                color: "rgba(0,0,0,0.05)"
+            },
+            ticks: {
+                color: "#333",
+                stepSize: 5000
+            }
+          }
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error loading or parsing flight data:', error);
+  }
+});
