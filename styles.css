@@ -286,9 +286,21 @@
   color: #0f47be;
   font-weight: bold;
   text-shadow: 0 2px 8px #b3d1ff80;
+  transition: opacity 0.3s cubic-bezier(0.7,0,0.84,0), transform 0.3s cubic-bezier(0.7,0,0.84,0);
 }
 .fahrenheit-value {
   color: #2c2c2c;
   font-weight: bold;
   text-shadow: 0 2px 8px #1c39828a;
+  transition: opacity 0.3s cubic-bezier(0.7,0,0.84,0), transform 0.3s cubic-bezier(0.7,0,0.84,0);
+}
+
+.fade-out {
+  opacity: 0;
+  transform: scale(1.2);
+}
+
+.fade-in {
+  opacity: 1;
+  transform: scale(1);
 }

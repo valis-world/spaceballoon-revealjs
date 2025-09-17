@@ -315,7 +315,7 @@ Reveal.on('slidechanged', function(event) {
         tempState.isAnimating = false;
 
         // Always reset fragments when arriving at the slide
-        const fragments = event.currentSlide.querySelectorAll('.fr-agment');
+        const fragments = event.currentSlide.querySelectorAll('.fragment');
         fragments.forEach(fragment => {
             fragment.classList.remove('visible');
             fragment.classList.remove('current-fragment');
