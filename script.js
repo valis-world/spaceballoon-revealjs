@@ -351,3 +351,61 @@ Reveal.on('fragmentshown', function(event) {
         }, 350); // match transition duration
     }
 });
+
+// Altitude animation thing
+let altitudeState = {
+    isFeet: false,
+    isAnimating: false
+};
+
+// Altitude conversion animation reset (add this block)
+Reveal.on('slidechanged', function(event) {
+    const altitudeEl = document.getElementById('altitude');
+    if (!altitudeEl) return;
+
+    if (event.currentSlide.contains(altitudeEl)) {
+        // Always reset to metres when arriving at this slide
+        altitudeEl.innerHTML = '<span class="metres-value">25,000m</span>';
+        altitudeEl.className = '';
+        altitudeState.isFeet = false;
+        altitudeState.isAnimating = false;
+
+        // Always reset fragments when arriving at the slide
+        const fragments = event.currentSlide.querySelectorAll('.fragment');
+        fragments.forEach(fragment => {
+            fragment.classList.remove('visible');
+            fragment.classList.remove('current-fragment');
+        });
+    }
+});
+
+// Altitude conversion animation
+Reveal.on('fragmentshown', function(event) {
+    const altitudeEl = document.getElementById('altitude');
+    if (altitudeEl && event.fragment.classList.contains('convert-altitude') && !altitudeState.isAnimating) {
+        altitudeState.isAnimating = true;
+
+        const valueSpan = altitudeEl.querySelector('span');
+        if (!valueSpan) return;
+
+        valueSpan.classList.remove('fade-in', 'fade-out');
+        valueSpan.classList.add('fade-out');
+
+        setTimeout(() => {
+            if (!altitudeState.isFeet) {
+                valueSpan.textContent = '82,000ft';
+                valueSpan.classList.remove('metres-value');
+                valueSpan.classList.add('feet-value');
+                altitudeState.isFeet = true;
+            } else {
+                valueSpan.textContent = '25,000m';
+                valueSpan.classList.remove('feet-value');
+                valueSpan.classList.add('metres-value');
+                altitudeState.isFeet = false;
+            }
+            valueSpan.classList.remove('fade-out');
+            valueSpan.classList.add('fade-in');
+            altitudeState.isAnimating = false;
+        }, 350);
+    }
+});
